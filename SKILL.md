@@ -7,6 +7,8 @@ Some ideas are explained better by a 5-second looping animation than by 100 line
 
 Sketch the figure in ASCII first: static layout, labelled motion, loop length. Get a yes before writing JSX.
 
+After building, look at the rendered file as a stranger would and refine once before handing back. ASCII covers structure; visual issues (collisions, weak contrast, orphan elements, dated chrome, loose components that should be grouped) only appear on screen.
+
 ## Guidelines
 
 - **Subject fit.** Invent a visual metaphor for this specific idea. The same concept can be drawn many ways (a flow as a path, ripples, falling sand, expanding rings; a network as nodes, a constellation, a colony of pulses). Reach past the obvious shape.
