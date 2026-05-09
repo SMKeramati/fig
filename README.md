@@ -21,11 +21,11 @@ Download the packaged `fig.skill` from releases and drag it into the Claude app.
 ## What's in here
 
 ```
-SKILL.md    The skill itself, loaded into Claude's context when triggered.
-LICENSE     MIT.
+SKILL.md             The skill itself, loaded into Claude's context when triggered.
+scripts/html2gif.sh  Optional helper. Converts a fig to a looping GIF
+                     using Playwright + ffmpeg. Used only when asked.
+LICENSE              MIT.
 ```
-
-That's the whole thing. One file does the work.
 
 ## License
 

@@ -108,4 +108,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(<Scene />);
 </html>
 ```
 
+## GIF (only if the user asks)
+
+A fig is HTML. If the user wants a GIF (for email clients that strip JS, slack previews, slide screenshots), use the bundled converter:
+
+`bash scripts/html2gif.sh <file.html> <loop_seconds>`
+
+It needs Playwright and ffmpeg installed locally. If either is missing, the script will tell the user how to install it. Do not install dependencies yourself, just relay what the script reports. The `loop_seconds` argument must match the figure's actual loop, otherwise the GIF jumps at the seam.
+
+## Never
+
 No play/pause, no scrub, no multi-scene. Those belong to `web-animation-engine`. The recipient opens the file and the idea plays itself.
