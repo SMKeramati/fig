@@ -74,11 +74,18 @@ const { chromium } = require('playwright');
       queue.clear();
       cbs.forEach(cb => { try { cb(virtual); } catch(e) {} });
     };
+    window.__queueSize = () => queue.size;
   });
 
-  await page.goto('file://$ABSPATH', { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await page.goto('file://$ABSPATH', { waitUntil: 'load', timeout: 60000 });
   await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
-  await page.waitForTimeout(800);   // let React mount and queue initial rAF
+
+  // Wait until React mounts and registers a rAF. Babel Standalone compile
+  // plus React mount can take 1 to 5 seconds on cold load. Polling here is
+  // far more reliable than a fixed sleep.
+  await page.waitForFunction(() => window.__queueSize && window.__queueSize() > 0, { timeout: 20000 })
+    .catch(() => { console.error('Warning: no requestAnimationFrame registered within 20s. The page may not use rAF, or React did not mount. Frames will likely be empty.'); });
+  await page.waitForTimeout(150);   // small buffer for React to flush initial state
 
   const N  = $N_FRAMES;
   const dt = 1000 / $FPS;
