@@ -80,12 +80,17 @@ const { chromium } = require('playwright');
   await page.goto('file://$ABSPATH', { waitUntil: 'load', timeout: 60000 });
   await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
 
-  // Wait until React mounts and registers a rAF. Babel Standalone compile
-  // plus React mount can take 1 to 5 seconds on cold load. Polling here is
-  // far more reliable than a fixed sleep.
-  await page.waitForFunction(() => window.__queueSize && window.__queueSize() > 0, { timeout: 20000 })
-    .catch(() => { console.error('Warning: no requestAnimationFrame registered within 20s. The page may not use rAF, or React did not mount. Frames will likely be empty.'); });
-  await page.waitForTimeout(150);   // small buffer for React to flush initial state
+  // Wait until the page actually renders something. Babel Standalone compile
+  // plus React mount is wildly variable (1 to 30+ seconds on cold loads), so
+  // a fixed sleep is unreliable. Wait for both signals: the root has DOM
+  // children (proves the JSX rendered) AND a rAF is queued (proves a
+  // useTime-style hook is wired up and ready to receive ticks).
+  await page.waitForFunction(() => {
+    const root = document.getElementById('root');
+    return root && root.children.length > 0 && window.__queueSize && window.__queueSize() > 0;
+  }, { timeout: 90000 })
+    .catch(() => { console.error('Warning: page did not mount within 90s. The page may not be React-based, may not use #root, or may not use requestAnimationFrame. Frames may be empty.'); });
+  await page.waitForTimeout(200);   // small buffer for React to flush initial state
 
   const N  = $N_FRAMES;
   const dt = 1000 / $FPS;
