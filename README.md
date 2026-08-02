@@ -1,3 +1,13 @@
+# fig has moved into the plugin marketplace
+
+> [!IMPORTANT]
+> **This repo is archived.** fig now lives in **[smk-labs/claude-plugins](https://github.com/smk-labs/claude-plugins/tree/main/plugins/fig)**, where it is kept up to date.
+>
+> Install it with `/plugin marketplace add smk-labs/claude-plugins` then `/plugin install fig@smk`. Same skill, plus the `to-gif` command.
+
+<details>
+<summary>Original README</summary>
+
 # fig
 
 A Claude skill for making a **fig**: a single looping animated SVG, one self-contained HTML file you can drop in an email or a slide.
@@ -30,3 +40,5 @@ LICENSE              MIT.
 ## License
 
 MIT.
+
+</details>
